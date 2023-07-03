@@ -28,6 +28,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+/*
+        // deslogar usuario
+        firebaseAuthUser.signOut();
+
+        // entrar com usuario cadastrado
+        firebaseAuthUser.signInWithEmailAndPassword("clayton@gmail.com" ,
+                "cl12345").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    Log.i("signI", "Sucesso ao logar usuario");
+                }else{
+                    Log.i("signI", "Erro ao logar usuario");
+                }
+            }
+        });
+*/
 
         /* verifica se o usuario esta logado*/
         if(firebaseAuthUser.getCurrentUser() !=null){
