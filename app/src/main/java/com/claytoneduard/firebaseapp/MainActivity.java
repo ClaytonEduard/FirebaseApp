@@ -6,6 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,15 +21,42 @@ public class MainActivity extends AppCompatActivity {
 
     //capturar referenca do FireBase/ para o nó raiz do banco
     private DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-
+    // metodo para autenticacao
+    private FirebaseAuth firebaseAuthUser = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /* verifica se o usuario esta logado*/
+        if(firebaseAuthUser.getCurrentUser() !=null){
+            Log.i("CreateUser", "Usuario logado");
+        }else {
+            Log.i("CreateUser", "Usuario nao logado");
+        }
+
+        // criar um usuario para autenticar
+       /* firebaseAuthUser.createUserWithEmailAndPassword(
+                "clayton@gmail.com" ,
+                "cl12345").
+                addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            Log.i("CreateUser", "Sucesso ao cadastrar o usuario");
+                        }else{
+                            Log.i("CreateUser", "Erro ao cadastrar o usuario");
+                        }
+                    }
+                });
+        */
+
+
         // salvando no modo basico
         //reference.child("pontos").setValue("200");
 
+     /*
         // pega a referencia do nó usuarios no banco
         DatabaseReference usuarios = reference.child("usuarios").child("001");
         DatabaseReference produtos = reference.child("produtos");
@@ -49,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         produtos.child("001").setValue(produto);
 
-      */
+
 
         //recuperar dados
         usuarios.addValueEventListener(new ValueEventListener() {
@@ -64,6 +95,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+      */
     }
 }
