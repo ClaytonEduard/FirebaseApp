@@ -14,6 +14,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,13 +32,53 @@ public class MainActivity extends AppCompatActivity {
 
         // pega a referencia do nó usuarios no banco
         DatabaseReference usuarios = reference.child("usuarios");
-        Usuario usuario = new Usuario();
-        usuario.setNome("Clayton");
-        usuario.setSobrenome("Eduard");
-        usuario.setIdade(33);
+
+        // filtros - selecionar usuario por id unico, id automatico do Firebase
+        //DatabaseReference usuariosPesquisa = usuarios.child("-NZS58EiwbZjzTAc55tQ");
+
+        // usando query para pesquisa 1° vc ordena os dados e depois aplica os filtros
+        //Query usuariosPesquisa = usuarios.orderByChild("nome").equalTo("Clayton");
+
+        // ordernar por id e retornar os dois primeiros
+        //Query usuariosPesquisa = usuarios.orderByKey().limitToFirst(2);
+
+        //ordernar por id os dois ultimos
+        //Query usuariosPesquisa = usuarios.orderByKey().limitToLast(2);
+
+        // filtro de maior ou igual >= 40
+        //Query usuariosPesquisa = usuarios.orderByChild("idade").startAt(40);
+
+        // filtro de menor ou igual <= 22
+        //Query usuariosPesquisa = usuarios.orderByChild("idade").endAt(22);
+
+        // filtro entre dois valores
+        //Query usuariosPesquisa = usuarios.orderByChild("idade").startAt(18).endAt(30);
+
+        // filtro por palavras iniciando em c, anplia a busca
+        Query usuariosPesquisa = usuarios.orderByChild("nome").
+                startAt("C").endAt("C" + "\uf8ff");
+        usuariosPesquisa.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+               /* Usuario dadosUsuario = snapshot.getValue(Usuario.class);
+                Log.i("Dados usuario", " nome: "+dadosUsuario.getNome() + ", sobrenome: "+ dadosUsuario.getSobrenome() + ", idade: "+ dadosUsuario.getIdade());
+                */
+                Log.i("Dados usuario", snapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        /*Usuario usuario = new Usuario();
+        usuario.setNome("Joana");
+        usuario.setSobrenome("Maria");
+        usuario.setIdade(54);
         // metodo push, cria o id auto incremento
         usuarios.push().setValue(usuario);
-
+        */
 /*
         // deslogar usuario
         firebaseAuthUser.signOut();
