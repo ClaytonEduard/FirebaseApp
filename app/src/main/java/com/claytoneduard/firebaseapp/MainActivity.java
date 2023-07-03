@@ -28,6 +28,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // pega a referencia do nó usuarios no banco
+        DatabaseReference usuarios = reference.child("usuarios");
+        Usuario usuario = new Usuario();
+        usuario.setNome("Clayton");
+        usuario.setSobrenome("Eduard");
+        usuario.setIdade(33);
+        // metodo push, cria o id auto incremento
+        usuarios.push().setValue(usuario);
+
 /*
         // deslogar usuario
         firebaseAuthUser.signOut();
@@ -46,12 +56,12 @@ public class MainActivity extends AppCompatActivity {
         });
 */
 
-        /* verifica se o usuario esta logado*/
+        /* verifica se o usuario esta logado
         if(firebaseAuthUser.getCurrentUser() !=null){
             Log.i("CreateUser", "Usuario logado");
         }else {
             Log.i("CreateUser", "Usuario nao logado");
-        }
+        }*/
 
         // criar um usuario para autenticar
        /* firebaseAuthUser.createUserWithEmailAndPassword(
