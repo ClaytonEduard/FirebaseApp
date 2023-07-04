@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -73,13 +74,45 @@ public class MainActivity extends AppCompatActivity {
                 //Define nos para o starage
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference();
                 StorageReference imagens = storageReference.child("imagens");
+                StorageReference imagemRef = imagens.child("celular.jpg");
+
+               imagemRef.getDownloadUrl().addOnSuccessListener(MainActivity.this,new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Glide.with(MainActivity.this).load(uri).into(imageFoto);
+                    }
+                }).addOnFailureListener(MainActivity.this, new OnFailureListener() {
+                   @Override
+                   public void onFailure(@NonNull Exception e) {
+                       Toast.makeText(
+                               MainActivity.this,
+                               "Erro ao fazer download: " + e.getMessage(),
+                               Toast.LENGTH_LONG
+                       ).show();
+                   }
+               });
+
+
+                //deletar aquivo
+                /*imagemRef.delete().addOnFailureListener(MainActivity.this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MainActivity.this, "Erro ao deletar", Toast.LENGTH_LONG).show();
+                    }
+                }).addOnSuccessListener(MainActivity.this, new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(MainActivity.this, "Sucesso ao deletar arquivo", Toast.LENGTH_LONG).show();
+                    }
+                });
+                    */
 
                 //nome da imagem
-                String nomeArquivo = UUID.randomUUID().toString();
-                StorageReference imagemRef = imagens.child(nomeArquivo+".jpeg");
+                //String nomeArquivo = UUID.randomUUID().toString();
+                //StorageReference imagemRef = imagens.child(nomeArquivo+".jpeg");
 
                 // retorna objeto que irá controlar o upload
-                UploadTask uploadTask = imagemRef.putBytes(dadosImagem);
+              /*  UploadTask uploadTask = imagemRef.putBytes(dadosImagem);
 
                 uploadTask.addOnFailureListener(MainActivity.this, new OnFailureListener() {
                     @Override
@@ -98,36 +131,36 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                     }
-                });
+                });*/
 
             }
         });
 
-        // pega a referencia do nó usuarios no banco
-        //DatabaseReference usuarios = reference.child("usuarios");
+                // pega a referencia do nó usuarios no banco
+                //DatabaseReference usuarios = reference.child("usuarios");
 
-        // filtros - selecionar usuario por id unico, id automatico do Firebase
-        //DatabaseReference usuariosPesquisa = usuarios.child("-NZS58EiwbZjzTAc55tQ");
+                // filtros - selecionar usuario por id unico, id automatico do Firebase
+                //DatabaseReference usuariosPesquisa = usuarios.child("-NZS58EiwbZjzTAc55tQ");
 
-        // usando query para pesquisa 1° vc ordena os dados e depois aplica os filtros
-        //Query usuariosPesquisa = usuarios.orderByChild("nome").equalTo("Clayton");
+                // usando query para pesquisa 1° vc ordena os dados e depois aplica os filtros
+                //Query usuariosPesquisa = usuarios.orderByChild("nome").equalTo("Clayton");
 
-        // ordernar por id e retornar os dois primeiros
-        //Query usuariosPesquisa = usuarios.orderByKey().limitToFirst(2);
+                // ordernar por id e retornar os dois primeiros
+                //Query usuariosPesquisa = usuarios.orderByKey().limitToFirst(2);
 
-        //ordernar por id os dois ultimos
-        //Query usuariosPesquisa = usuarios.orderByKey().limitToLast(2);
+                //ordernar por id os dois ultimos
+                //Query usuariosPesquisa = usuarios.orderByKey().limitToLast(2);
 
-        // filtro de maior ou igual >= 40
-        //Query usuariosPesquisa = usuarios.orderByChild("idade").startAt(40);
+                // filtro de maior ou igual >= 40
+                //Query usuariosPesquisa = usuarios.orderByChild("idade").startAt(40);
 
-        // filtro de menor ou igual <= 22
-        //Query usuariosPesquisa = usuarios.orderByChild("idade").endAt(22);
+                // filtro de menor ou igual <= 22
+                //Query usuariosPesquisa = usuarios.orderByChild("idade").endAt(22);
 
-        // filtro entre dois valores
-        //Query usuariosPesquisa = usuarios.orderByChild("idade").startAt(18).endAt(30);
+                // filtro entre dois valores
+                //Query usuariosPesquisa = usuarios.orderByChild("idade").startAt(18).endAt(30);
 
-        // filtro por palavras iniciando em c, anplia a busca
+                // filtro por palavras iniciando em c, anplia a busca
      /*   Query usuariosPesquisa = usuarios.orderByChild("nome").
                 startAt("C").endAt("C" + "\uf8ff");
         usuariosPesquisa.addValueEventListener(new ValueEventListener() {
@@ -177,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i("CreateUser", "Usuario nao logado");
         }*/
 
-        // criar um usuario para autenticar
+                // criar um usuario para autenticar
        /* firebaseAuthUser.createUserWithEmailAndPassword(
                 "clayton@gmail.com" ,
                 "cl12345").
@@ -194,8 +227,8 @@ public class MainActivity extends AppCompatActivity {
         */
 
 
-        // salvando no modo basico
-        //reference.child("pontos").setValue("200");
+                // salvando no modo basico
+                //reference.child("pontos").setValue("200");
 
      /*
         // pega a referencia do nó usuarios no banco
